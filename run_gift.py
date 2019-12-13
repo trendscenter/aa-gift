@@ -318,13 +318,17 @@ def get_interpolated_nifti(template_filename, input_filename, destination_dir='/
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--algorithm', help='old foo help')
-    parser.add_argument('-i', '--infiles', help='old foo help')
-    parser.add_argument('-o', '--outfile', help='outfile')
+    parser.add_argument('-a', '--algorithm', help='the algorithm to use: gica, dfnc, or both in sequence')
+    parser.add_argument('-i', '--infiles', help='input files, comma separated')
+    parser.add_argument('-o', '--outfile', help='output directory')
+    parser.add_argument('-j', '--json', help='additional json arguments')
     args = parser.parse_args()
     algorithm = args.algorithm
     json_args = {'in_files': args.infiles, 'out_dir':args.outfile}
     json_args['in_files'] = json_args['in_files'].split(',')
+    params = json.loads(json_args['parameters'])
+    for key, val in params.items():
+        json_args[key] = val
     if algorithm == 'gica':
         # Do Group ICA
         gift_gica(**json_args)
