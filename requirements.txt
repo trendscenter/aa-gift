@@ -1,0 +1,2 @@
+nipype==1.1.7
+nibabel
