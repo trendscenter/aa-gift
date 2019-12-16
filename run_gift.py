@@ -326,7 +326,7 @@ if __name__ == '__main__':
     algorithm = args.algorithm
     json_args = {'in_files': args.infiles, 'out_dir':args.outfile}
     json_args['in_files'] = json_args['in_files'].split(',')
-    params = json.loads(json_args['parameters'])
+    params = json.load(open(args.json,'r'))
     for key, val in params.items():
         json_args[key] = val
     if algorithm == 'gica':
