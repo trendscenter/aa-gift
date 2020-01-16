@@ -42,7 +42,7 @@ ICA_ALGORITHMS = ['InfoMax', 'Fast ICA', 'Erica', 'Simbec', 'Evd', 'Jade Opac',
 
 # SHARED DEFAULTS
 #matlab_cmd = os.getenv('MATLAB_COMMAND')
-matlab_cmd = '/app/groupicatv4.0b/GroupICATv4.0b_standalone/run_groupica.sh /usr/local/MATLAB/MATLAB_Runtime/v901/'
+matlab_cmd = '/app/groupicatv4.0b/GroupICATv4.0b_standalone/run_groupica.sh /usr/local/MATLAB/MATLAB_Runtime/v91/'
 #DEFAULT_OUT_DIR = os.path.join(str(settings.ROOT_DIR), 'media', 'figures')
 DEFAULT_OUT_DIR = '/out'
 DEFAULT_DISPLAY_RESULTS = 1
@@ -145,7 +145,7 @@ def gift_gica(
     gc = gift.GICACommand()
     gc.inputs.in_files = in_files
     gc.inputs.algoType = algoType
-    gc.inputs.group_pca_type = PCA_TYPES[group_pca_type]
+    gc.inputs.group_pca_type = group_pca_type
     gc.inputs.backReconType = backReconType
     gc.inputs.preproc_type = preproc_type
     gc.inputs.numReductionSteps = numReductionSteps
