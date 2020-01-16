@@ -48,7 +48,7 @@ RUN pip install -r requirements.txt
 RUN pip install awscli s3utils
 COPY ./groupicatv4.0b/icatb/nipype-0.10.0/nipype/interfaces/gift /usr/local/lib/python3.6/site-packages/nipype/interfaces/gift
 RUN chmod -R a+wrx /app
-RUN chmod -R a+wrx /usr/local/MATLAB/MATLAB_Runtime/v91
+#RUN chmod -R a+wrx /usr/local/MATLAB/MATLAB_Runtime/v91
 
 
 COPY . /app

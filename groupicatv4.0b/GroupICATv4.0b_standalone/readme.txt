@@ -3,7 +3,7 @@ MATLAB Compiler
 1. Prerequisites for Deployment 
 
 . Verify the MATLAB Runtime is installed and ensure you    
-  have installed version 9.0.1 (R2016a).   
+  have installed version 9.1 (R2016b).   
 
 . If the MATLAB Runtime is not installed, do the following:
   (1) enter
@@ -15,7 +15,7 @@ MATLAB Compiler
 
   (2) run the MATLAB Runtime installer.
 
-Or download the Linux 64-bit version of the MATLAB Runtime for R2016a 
+Or download the Linux 64-bit version of the MATLAB Runtime for R2016b 
 from the MathWorks Web site by navigating to
 
    http://www.mathworks.com/products/compiler/mcr/index.html
@@ -30,7 +30,6 @@ in the MathWorks Documentation Center.
 
 Files to package for Standalone 
 ================================
--groupica.ctf (component technology file)
 -groupica 
 -run_groupica.sh (shell script for temporarily setting environment variables and 
                   executing the application)
@@ -39,14 +38,14 @@ Files to package for Standalone
        ./run_groupica.sh <mcr_directory> <argument_list>
        
     at Linux or Mac command prompt. <mcr_directory> is the directory 
-    where version 9.0.1 of the MATLAB Runtime is installed or the directory where 
+    where version 9.1 of the MATLAB Runtime is installed or the directory where 
     MATLAB is installed on the machine. <argument_list> is all the 
     arguments you want to pass to your application. For example, 
 
-    If you have version 9.0.1 of the MATLAB Runtime installed in 
-    /mathworks/home/application/v901, run the shell script as:
+    If you have version 9.1 of the MATLAB Runtime installed in 
+    /mathworks/home/application/v91, run the shell script as:
     
-       ./run_groupica.sh /mathworks/home/application/v901
+       ./run_groupica.sh /mathworks/home/application/v91
        
     If you have MATLAB installed in /mathworks/devel/application/matlab, 
     run the shell script as:
@@ -75,24 +74,24 @@ In the following directions, replace MCR_ROOT by the directory where the MATLAB 
 
 (1) Set the environment variable XAPPLRESDIR to this value:
 
-    MCR_ROOT/v901/X11/app-defaults
+    MCR_ROOT/v91/X11/app-defaults
 
 
 (2) If the environment variable LD_LIBRARY_PATH is undefined, set it to the concatenation 
    of the following strings:
 
-    MCR_ROOT/v901/runtime/glnxa64:
-    MCR_ROOT/v901/bin/glnxa64:
-    MCR_ROOT/v901/sys/os/glnxa64:
-    MCR_ROOT/v901/sys/opengl/lib/glnxa64
+    MCR_ROOT/v91/runtime/glnxa64:
+    MCR_ROOT/v91/bin/glnxa64:
+    MCR_ROOT/v91/sys/os/glnxa64:
+    MCR_ROOT/v91/sys/opengl/lib/glnxa64
 
     If it is defined, set it to the concatenation of these strings:
 
     ${LD_LIBRARY_PATH}: 
-    MCR_ROOT/v901/runtime/glnxa64:
-    MCR_ROOT/v901/bin/glnxa64:
-    MCR_ROOT/v901/sys/os/glnxa64:
-    MCR_ROOT/v901/sys/opengl/lib/glnxa64
+    MCR_ROOT/v91/runtime/glnxa64:
+    MCR_ROOT/v91/bin/glnxa64:
+    MCR_ROOT/v91/sys/os/glnxa64:
+    MCR_ROOT/v91/sys/opengl/lib/glnxa64
 
    For more detail information about setting the MATLAB Runtime paths, see Package and 
    Distribute in the MATLAB Compiler documentation in the MathWorks Documentation Center.

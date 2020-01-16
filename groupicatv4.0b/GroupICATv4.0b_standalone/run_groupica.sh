@@ -11,15 +11,15 @@ if [ "x$1" = "x" ]; then
   echo Usage:
   echo    $0 \<deployedMCRroot\> args
 else
-  echo Setting up environment variables
-  MCRROOT="$1"
+  MCRROOT="/usr/local/MATLAB/MATLAB_Runtime"
   echo ---
-  LD_LIBRARY_PATH=.:${MCRROOT}/runtime/glnxa64 ;
-  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MCRROOT}/bin/glnxa64 ;
-  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MCRROOT}/sys/os/glnxa64;
-  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MCRROOT}/sys/opengl/lib/glnxa64;
-  #LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/MATLAB/MATLAB_Runtime/v91/runtime/glnxa64:/usr/local/MATLAB/MATLAB_Runtime/v91/bin/glnxa64:/usr/local/MATLAB/MATLAB_Runtime/v91/sys/os/glnxa64:/usr/local/MATLAB/MATLAB_Runtime/v91/sys/opengl/lib/glnxa64:/usr/local/MATLAB/MATLAB_Runtime/v91/sys/java/jre/glnxa64/jre/lib/amd64/native_threads:/usr/local/MATLAB/MATLAB_Runtime/v91/sys/java/jre/glnxa64/jre/lib/amd64/server:/usr/local/MATLAB/MATLAB_Runtime/v91/sys/java/jre/glnxa64/jre/lib/amd64
+  LD_LIBRARY_PATH=.:${MCRROOT}/v91/runtime/glnxa64 ;
+  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MCRROOT}/v91/bin/glnxa64 ;
+  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MCRROOT}/v91/sys/os/glnxa64;
+  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${MCRROOT}/v91/sys/opengl/lib/glnxa64;
   export LD_LIBRARY_PATH;
+  XAPPLRESDIR=${MCROOT}/v91/X11/app-defaults;
+  export XAPPLRESDIR;
   echo LD_LIBRARY_PATH is ${LD_LIBRARY_PATH};
   shift 1
   args=
