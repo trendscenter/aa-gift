@@ -71,6 +71,7 @@ class GIFTCommand(BaseInterface):
                 matlab_cmd_str = matlab_cmd_str + " "
         self.mlab = MatlabCommand(matlab_cmd=matlab_cmd_str,
                                   mfile=self.inputs.mfile,
+                                  logfile='/out/mcr.log',
                                   paths=self.inputs.paths)       
         self.mlab.inputs.script_file = 'pyscript_%s.m' % self.__class__.__name__.split('.')[-1].lower()
         if isdefined(self.inputs.use_mcr) and self.inputs.use_mcr:

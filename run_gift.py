@@ -20,6 +20,7 @@ Todo:
 import os
 #import utils as ut
 import nipype.interfaces.gift as gift
+from nipype import config, logging
 import nibabel as nib
 from nibabel.processing import resample_from_to
 from nibabel.funcs import four_to_three
@@ -323,10 +324,12 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--outfile', help='output directory')
     parser.add_argument('-j', '--json', help='additional json arguments')
     args = parser.parse_args()
+    config.update_config({'logging' :{'log_directory': args.outfile, 'log_to_file': True}})
+    logging.update_logging(config)
     algorithm = args.algorithm
     json_args = {'out_dir':args.outfile}
     if args.infiles is not None:
-        json_args['in_files'] = json_args['in_files'].split(',')
+        json_args['in_files'] = args.infiles.split(',')
     params = json.load(open(args.json,'r'))
     for key, val in params.items():
         json_args[key] = val
