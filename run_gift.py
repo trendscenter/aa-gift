@@ -267,6 +267,32 @@ def gift_dfnc(
 
     return gc.run()
 
+def gift_mancova(
+    ica_param_file=DEFAULT_ICA_PARAM_FILE,
+    out_dir=DEFAULT_OUT_DIR,
+    run_name=DEFAULT_RUN_NAME,
+    comp_network_names=DEFAULT_COMP_NETWORK_NAMES,
+    TR=DEFAULT_TR,
+    features=DEFAULT_FEATURES,
+    covariates=DEFAULT_COVARIATES,
+    interactions=DEFAULT_INTERACTIONS,
+    numOfPCs=DEFAULT_NUM_COMPS,
+    feature_params=DEFAULT_FEATURE_PARAMS,
+):
+    gift.MancovanCommand.set_mlab_paths(matlab_cmd=matlab_cmd)
+
+    gc = gift.MancovanCommand()
+    gc.inputs.ica_param_file = ica_param_file
+    gc.inputs.out_dir = out_dir
+    gc.inputs.comp_network_names = comp_network_names
+    gc.inputs.TR = TR
+    gc.inputs.features = features
+    gc.inputs.covariates = covariates
+    gc.inputs.interactions = interactions
+    gc.inputs.numOfPCs = numOfPCs
+    gc.inputs.feature_params = feature_params
+
+    return gc.run()
 
 def gift_patch(**kwargs):
     gica_result = gift_gica(**kwargs)
@@ -339,6 +365,8 @@ if __name__ == '__main__':
     elif algorithm == 'dfnc':
         # Do only dFNC
         gift_dfnc(**json_args)
+    elif algorithm == 'mancova':
+        gift_mancova(**json_args)
     else:
         # Do both
         gift_patch(**json_args)
