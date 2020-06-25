@@ -1,5 +1,6 @@
 import json
 import sys
+
 """run_gift.py
 
 This module contains default parameters and functions for running
@@ -18,7 +19,8 @@ Todo:
 
 """
 import os
-#import utils as ut
+
+# import utils as ut
 import nipype.interfaces.gift as gift
 from nipype import config, logging
 import nibabel as nib
@@ -29,23 +31,42 @@ import argparse
 # from django.conf import settings
 
 # CONSTANTS
-ICA_TYPES = ['spatial', 'temporal']
-PCA_TYPES = ['subject specific', 'group grand mean']
-BACK_RECON = ['regular', 'spatial-temporal regression',
-              'gica3', 'gica', 'gig-ica']
-PREPROC_TYPES = ['remove mean per timepoint', 'remove mean per voxel',
-                 'intensity normalization', 'variance normalization']
-SCALE_TYPE = ['No scaling', 'percent signal change', 'Z-scores']
-WHICH_ANALYSIS = ['standard', 'ICASSO', 'MST']
-ICA_ALGORITHMS = ['InfoMax', 'Fast ICA', 'Erica', 'Simbec', 'Evd', 'Jade Opac',
-                  'Amuse', 'SDD ICA', 'Semi-blind Infomax', 'Constrained ICA (Spatial)', 'Radical ICA',
-                  'Combi', 'ICA-EBM', 'ERBM', 'IVA-GL', 'GIG-ICA', 'IVA-L']
+ICA_TYPES = ["spatial", "temporal"]
+PCA_TYPES = ["subject specific", "group grand mean"]
+BACK_RECON = ["regular", "spatial-temporal regression", "gica3", "gica", "gig-ica"]
+PREPROC_TYPES = [
+    "remove mean per timepoint",
+    "remove mean per voxel",
+    "intensity normalization",
+    "variance normalization",
+]
+SCALE_TYPE = ["No scaling", "percent signal change", "Z-scores"]
+WHICH_ANALYSIS = ["standard", "ICASSO", "MST"]
+ICA_ALGORITHMS = [
+    "InfoMax",
+    "Fast ICA",
+    "Erica",
+    "Simbec",
+    "Evd",
+    "Jade Opac",
+    "Amuse",
+    "SDD ICA",
+    "Semi-blind Infomax",
+    "Constrained ICA (Spatial)",
+    "Radical ICA",
+    "Combi",
+    "ICA-EBM",
+    "ERBM",
+    "IVA-GL",
+    "GIG-ICA",
+    "IVA-L",
+]
 
 # SHARED DEFAULTS
-#matlab_cmd = os.getenv('MATLAB_COMMAND')
-matlab_cmd = '/app/groupicatv4.0b/GroupICATv4.0b_standalone/run_groupica.sh /usr/local/MATLAB/MATLAB_Runtime/v91/'
-#DEFAULT_OUT_DIR = os.path.join(str(settings.ROOT_DIR), 'media', 'figures')
-DEFAULT_OUT_DIR = '/out'
+# matlab_cmd = os.getenv('MATLAB_COMMAND')
+matlab_cmd = "/app/groupicatv4.0b/GroupICATv4.0b_standalone/run_groupica.sh /usr/local/MATLAB/MATLAB_Runtime/v91/"
+# DEFAULT_OUT_DIR = os.path.join(str(settings.ROOT_DIR), 'media', 'figures')
+DEFAULT_OUT_DIR = "/out"
 DEFAULT_DISPLAY_RESULTS = 1
 DEFAULT_NUM_COMPS = 53
 DEFAULT_COMP_NETWORK_NAMES = {}
@@ -54,52 +75,63 @@ DEFAULT_TR = 2
 # GICA DEFAULTS
 DEFAULT_DIM = 53
 DEFAULT_ALG = 1
-DEFAULT_ICA_PARAM_FILE = ''
-DEFAULT_REFS = os.path.join('/app', 'template',
-                            'NeuroMark.nii')
-DEFAULT_RUN_NAME = 'dfnc'
+DEFAULT_ICA_PARAM_FILE = ""
+DEFAULT_REFS = os.path.join("/app", "template", "NeuroMark.nii")
+DEFAULT_RUN_NAME = "dfnc"
 DEFAULT_GROUP_PCA_TYPE = 0
 DEFAULT_BACK_RECON_TYPE = 1
 DEFAULT_PREPROC_TYPE = 1
 DEFAULT_NUM_REDUCTION_STEPS = 1
 DEFAULT_SCALE_TYPE = 1
-DEFAULT_GROUP_ICA_TYPE = 'spatial'
+DEFAULT_GROUP_ICA_TYPE = "spatial"
 DEFAULT_WHICH_ANALYSIS = 1
-DEFAULT_MASK = ''
+DEFAULT_MASK = None
 
 # dFNC DEFAULTS
 # populated into the dfnc_parameters dict
-DEFAULT_TC_DETREND = 3,
-DEFAULT_TC_DESPIKE = 'yes',
-DEFAULT_TC_FILTER = 0.15,
+DEFAULT_TC_DETREND = (3,)
+DEFAULT_TC_DESPIKE = ("yes",)
+DEFAULT_TC_FILTER = (0.15,)
 DEFAULT_TC_COVARIATES_FILES_LIST = []
 DEFAULT_TC_COVARIATES_FILE_NUMBERS = []
-DEFAULT_METHOD = 'none'
+DEFAULT_METHOD = "none"
 DEFAULT_WSIZE = 30
 DEFAULT_WINDOW_ALPHA = 3
 DEFAULT_NUM_REPETITIONS = 10
 # populated into the postprocessing dict
 DEFAULT_NUM_CLUSTERS = 5
-DEFAULT_ICA_ALGORITHM = 'infomax'
+DEFAULT_ICA_ALGORITHM = "infomax"
 DEFAULT_ICA_NUM_ICA_RUNS = 5
-DEFAULT_REGRESS_COV_FILE = ''
+DEFAULT_REGRESS_COV_FILE = ""
 DEFAULT_KMEANS_MAX_ITER = 150
-DEFAULT_DMETHOD = 'city'
+DEFAULT_DMETHOD = "city"
 
 # ManCova
 DEFAULT_FEATURES = []
 DEFAULT_COVARIATES = {}
 DEFAULT_INTERACTIONS = []
 DEFAULT_FEATURE_PARAMS = {}
+DEFAULT_P_THRESHOLD = 1.0
 
 
 def gift_gica(
-    in_files=[], dim=DEFAULT_DIM, algoType=DEFAULT_ALG, refFiles=DEFAULT_REFS,
-    run_name=DEFAULT_RUN_NAME, out_dir=DEFAULT_OUT_DIR, group_pca_type=DEFAULT_GROUP_PCA_TYPE,
-    backReconType=DEFAULT_BACK_RECON_TYPE, preproc_type=DEFAULT_PREPROC_TYPE,
-    numReductionSteps=DEFAULT_NUM_REDUCTION_STEPS, scaleType=DEFAULT_SCALE_TYPE,
-    group_ica_type=DEFAULT_GROUP_ICA_TYPE, display_results=DEFAULT_DISPLAY_RESULTS,
-    which_analysis=DEFAULT_WHICH_ANALYSIS, mask=DEFAULT_MASK, **kwargs
+    in_files=[],
+    dim=DEFAULT_DIM,
+    algoType=DEFAULT_ALG,
+    refFiles=DEFAULT_REFS,
+    run_name=DEFAULT_RUN_NAME,
+    out_dir=DEFAULT_OUT_DIR,
+    group_pca_type=DEFAULT_GROUP_PCA_TYPE,
+    backReconType=DEFAULT_BACK_RECON_TYPE,
+    preproc_type=DEFAULT_PREPROC_TYPE,
+    numReductionSteps=DEFAULT_NUM_REDUCTION_STEPS,
+    scaleType=DEFAULT_SCALE_TYPE,
+    group_ica_type=DEFAULT_GROUP_ICA_TYPE,
+    display_results=DEFAULT_DISPLAY_RESULTS,
+    which_analysis=DEFAULT_WHICH_ANALYSIS,
+    mask=DEFAULT_MASK,
+    comp_network_names=None,
+    **kwargs
 ):
     """
     Wrapper for initializing GIFT nipype interface to run Group ICA.
@@ -155,7 +187,10 @@ def gift_gica(
     gc.inputs.which_analysis = which_analysis
     gc.inputs.refFiles = get_interpolated_nifti(in_files[0], refFiles, out_dir)
     gc.inputs.display_results = display_results
-
+    if mask is not None:
+        gc.inputs.mask = mask
+    if comp_network_names is not None:
+        gc.inputs.network_summary_opts = {"comp_network_names": comp_network_names}
     if dim > 0:
         gc.inputs.dim = dim
 
@@ -165,13 +200,13 @@ def gift_gica(
 
 
 def resolve_comp_network_names(num_comps, network_names):
-    '''
+    """
         Resolve the DEFAULT network names, so that the number of components in that dict does
         not exceed the desired num_comps. This is required for dFNC input.
 
         Currently just use the network numbers.
-    '''
-    return {'%d' % v: v+1 for v in range(num_comps)}
+    """
+    return {"%d" % v: v + 1 for v in range(num_comps)}
 
 
 def gift_dfnc(
@@ -199,7 +234,7 @@ def gift_dfnc(
     display_results=DEFAULT_DISPLAY_RESULTS,
     **kwargs
 ):
-    '''
+    """
     Wrapper for initializing GIFT nipype interface to run dynamic FNC.
 
     Args:
@@ -227,7 +262,7 @@ def gift_dfnc(
 
     Args (not supported here, but available for nipype):
         Regularisation      (Str)   :   Options are 'none' and 'L1'. 
-    '''
+    """
     out_dir = os.path.join(out_dir, run_name)
 
     if not os.path.exists(out_dir):
@@ -239,12 +274,14 @@ def gift_dfnc(
     gc.inputs.ica_param_file = ica_param_file
     gc.inputs.out_dir = out_dir
     gc.inputs.comp_network_names = resolve_comp_network_names(
-        ica_num_comps, comp_network_names)
+        ica_num_comps, comp_network_names
+    )
     gc.inputs.TR = TR
     dfnc_params = dict(
         tc_detrend=tc_detrend,
-        tc_covariates=dict(file_numbers=tc_covariates_file_numbers,
-                           filesList=tc_covariates_filesList),
+        tc_covariates=dict(
+            file_numbers=tc_covariates_file_numbers, filesList=tc_covariates_filesList
+        ),
         tc_despike=tc_despike,
         tc_filter=tc_filter,
         method=method,
@@ -254,9 +291,11 @@ def gift_dfnc(
     )
     postprocess = dict(
         num_clusters=num_clusters,
-        ica=dict(algorithm=ica_algorithm,
-                 num_comps=ica_num_comps,
-                 num_ica_runs=ica_num_ica_runs),
+        ica=dict(
+            algorithm=ica_algorithm,
+            num_comps=ica_num_comps,
+            num_ica_runs=ica_num_ica_runs,
+        ),
         regressCovFile=regressCovFile,
         kmeans_max_iter=kmeans_max_iter,
         dmethod=dmethod,
@@ -266,6 +305,7 @@ def gift_dfnc(
     gc.inputs.postprocess = postprocess
 
     return gc.run()
+
 
 def gift_mancova(
     ica_param_file=DEFAULT_ICA_PARAM_FILE,
@@ -278,8 +318,10 @@ def gift_mancova(
     interactions=DEFAULT_INTERACTIONS,
     numOfPCs=DEFAULT_NUM_COMPS,
     feature_params=DEFAULT_FEATURE_PARAMS,
+    p_threshold=DEFAULT_P_THRESHOLD,
+    univariate_tests=None,
 ):
-    gift.MancovanCommand.set_mlab_paths(matlab_cmd=matlab_cmd)
+    gift.MancovanCommand.set_mlab_paths(matlab_cmd=matlab_cmd, use_mcr=True)
 
     gc = gift.MancovanCommand()
     gc.inputs.ica_param_file = ica_param_file
@@ -291,22 +333,33 @@ def gift_mancova(
     gc.inputs.interactions = interactions
     gc.inputs.numOfPCs = numOfPCs
     gc.inputs.feature_params = feature_params
-
+    gc.inputs.p_threshold = p_threshold
+    gc.inputs.display = {
+        "freq_limits": [0.1, 0.15],
+        "structFile": "/app/groupicatv4.0b/icatb/src/icatb_templates/ch2bet.nii",
+        "t_threshold": 1.0,
+        "image_values": "positive",
+        "threshdesc": "fdr",
+    }
+    if univariate_tests is not None:
+        gc.inputs.univariate_tests = univariate_tests
     return gc.run()
+
 
 def gift_patch(**kwargs):
     gica_result = gift_gica(**kwargs)
-    out_dir = gica_result.inputs['out_dir']
-    nc = gica_result.inputs['dim']
-    alg = ICA_ALGORITHMS[gica_result.inputs['algoType']]
-    param_file = os.path.join(out_dir, 'gica_cmd_ica_parameter_info.mat')
+    out_dir = gica_result.inputs["out_dir"]
+    nc = gica_result.inputs["dim"]
+    alg = ICA_ALGORITHMS[gica_result.inputs["algoType"]]
+    param_file = os.path.join(out_dir, "gica_cmd_ica_parameter_info.mat")
     kwargs["ica_param_file"] = param_file
     kwargs["ica_algorithm"] = alg
     kwargs["out_dir"] = out_dir
     dfnc_result = gift_dfnc(**kwargs)
 
-def get_interpolated_nifti(template_filename, input_filename, destination_dir='/out'):
-    '''
+
+def get_interpolated_nifti(template_filename, input_filename, destination_dir="/out"):
+    """
         Get an interpolated version of an file which is interpolated to match a reference.
         First, check if interpolated dimensions of nifti files match, if so, just return the input_filename.
         Else, if an interpolated version of the file has been created and saved in the root directory before, return its filename,
@@ -318,54 +371,71 @@ def get_interpolated_nifti(template_filename, input_filename, destination_dir='/
             input_filename = ' example.nii ' has dimension 53 x 63 x 52
             template_filename = 'template.nii' has dimension 53 x 63 x 46
             output_filename = 'example_INTERP_53_63_46.nii' has dimension 53 x 63 x 46
-    '''
+    """
 
     base_dir = os.path.dirname(input_filename)
     input_prefix, input_ext = os.path.splitext(input_filename)
     template_img = nib.load(template_filename)
     input_img = nib.load(input_filename)
-    template_img = template_img.slicer[:, :, :, :input_img.shape[3]]
+    template_img = template_img.slicer[:, :, :, : input_img.shape[3]]
     template_dim = template_img.shape
 
     if input_img.shape == template_dim:
         return input_filename
 
     output_filename = os.path.join(
-        base_dir, "%s_INTERP_%d_%d_%d.nii" % (input_prefix, template_img.shape[0], template_img.shape[1], template_img.shape[2]))
+        base_dir,
+        "%s_INTERP_%d_%d_%d.nii"
+        % (
+            input_prefix,
+            template_img.shape[0],
+            template_img.shape[1],
+            template_img.shape[2],
+        ),
+    )
 
     if os.path.exists(output_filename):
         return output_filename
 
     output_img = resample_from_to(input_img, template_img)
     if destination_dir is not None:
-        output_filename = os.path.join(destination_dir, os.path.basename(output_filename))
+        output_filename = os.path.join(
+            destination_dir, os.path.basename(output_filename)
+        )
     nib.save(output_img, output_filename)
 
     return output_filename
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--algorithm', help='the algorithm to use: gica, dfnc, or both in sequence')
-    parser.add_argument('-i', '--infiles', help='input files, comma separated')
-    parser.add_argument('-o', '--outfile', help='output directory')
-    parser.add_argument('-j', '--json', help='additional json arguments')
+    parser.add_argument(
+        "-a",
+        "--algorithm",
+        help="the algorithm to use: gica, dfnc, or both in sequence",
+    )
+    parser.add_argument("-i", "--infiles", help="input files, comma separated")
+    parser.add_argument("-o", "--outfile", help="output directory")
+    parser.add_argument("-j", "--json", help="additional json arguments")
     args = parser.parse_args()
-    config.update_config({'logging' :{'log_directory': args.outfile, 'log_to_file': True}})
+    config.update_config(
+        {"logging": {"log_directory": args.outfile, "log_to_file": True}}
+    )
     logging.update_logging(config)
     algorithm = args.algorithm
-    json_args = {'out_dir':args.outfile}
+    json_args = {"out_dir": args.outfile}
     if args.infiles is not None:
-        json_args['in_files'] = args.infiles.split(',')
-    params = json.load(open(args.json,'r'))
+        json_args["in_files"] = args.infiles.split(",")
+    params = json.load(open(args.json, "r"))
     for key, val in params.items():
         json_args[key] = val
-    if algorithm == 'gica':
+    if algorithm == "gica":
         # Do Group ICA
         gift_gica(**json_args)
-    elif algorithm == 'dfnc':
+    elif algorithm == "dfnc":
         # Do only dFNC
         gift_dfnc(**json_args)
-    elif algorithm == 'mancova':
+    elif algorithm == "mancova":
         gift_mancova(**json_args)
     else:
         # Do both

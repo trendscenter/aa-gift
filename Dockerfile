@@ -2,7 +2,7 @@
 FROM coinstac/coinstac-base-python-stream
 ENV MCRROOT=/usr/local/MATLAB/MATLAB_Runtime/v91
 ENV MCR_CACHE_ROOT=/tmp
-RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
+#RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
 
 RUN apt-get update && apt-get install -y software-properties-common
 #RUN add-apt-repository ppa:deadsnakes/ppa
