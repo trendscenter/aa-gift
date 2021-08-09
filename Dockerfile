@@ -1,5 +1,4 @@
-# FROM ubuntu:16.04
-FROM coinstac/coinstac-base-python-stream
+FROM ubuntu:16.04
 ENV MCRROOT=/usr/local/MATLAB/MATLAB_Runtime/v91
 ENV MCR_CACHE_ROOT=/tmp
 #RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
