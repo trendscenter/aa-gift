@@ -118,6 +118,11 @@ DEFAULT_COVARIATES = {}
 DEFAULT_INTERACTIONS = []
 DEFAULT_FEATURE_PARAMS = {}
 DEFAULT_P_THRESHOLD = 1.0
+DEFAULT_FREQ_LIMITS= [0.1, 0.15]
+DEFAULT_STRUCTFILE = "/app/groupicatv4.0c/icatb/src/icatb_templates/ch2bet.nii"
+DEFAULT_T_THRESHOLD = 1.0
+DEFAULT_IMAGE_VALUES = "positive"
+DEFAULT_THRESHDESC = "fdr"
 
 
 def gift_gica(
@@ -345,12 +350,22 @@ def gift_mancova(
     feature_params=DEFAULT_FEATURE_PARAMS,
     p_threshold=DEFAULT_P_THRESHOLD,
     univariate_tests=None,
+    freq_limits=DEFAULT_FREQ_LIMITS,
+    structFile=DEFAULT_STRUCTFILE,
+    t_threshold=DEFAULT_T_THRESHOLD,
+    image_values=DEFAULT_IMAGE_VALUES,
+    threshdesc=DEFAULT_THRESHDESC
 ):
     gift.MancovanCommand.set_mlab_paths(matlab_cmd=matlab_cmd, use_mcr=True)
 
     gc = gift.MancovanCommand()
     gc_ica_param_file=list()
-    gc_ica_param_file.append(ica_param_file)
+    if type(ica_param_file) is str:
+        gc_ica_param_file.append(ica_param_file)
+    elif type(ica_param_file) is list:
+        gc_ica_param_file.extend(ica_param_file)
+    else: 
+        raise(ValueError("ica_param_file must be str or list"))
     gc.inputs.ica_param_file = gc_ica_param_file
     gc.inputs.out_dir = out_dir
     gc.inputs.comp_network_names = comp_network_names
@@ -362,11 +377,11 @@ def gift_mancova(
     gc.inputs.feature_params = feature_params
     gc.inputs.p_threshold = p_threshold
     gc.inputs.display = {
-        "freq_limits": [0.1, 0.15],
-        "structFile": "/app/groupicatv4.0b/icatb/src/icatb_templates/ch2bet.nii",
-        "t_threshold": 1.0,
-        "image_values": "positive",
-        "threshdesc": "fdr",
+        "freq_limits": freq_limits,
+        "structFile": structFile,
+        "t_threshold": t_threshold,
+        "image_values": image_values,
+        "threshdesc": threshdesc,
     }
     if univariate_tests is not None:
         gc.inputs.univariate_tests = univariate_tests
