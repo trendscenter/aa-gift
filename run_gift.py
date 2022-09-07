@@ -60,7 +60,7 @@ ICA_ALGORITHMS = [
 
 # SHARED DEFAULTS
 # matlab_cmd = os.getenv('MATLAB_COMMAND')
-matlab_cmd = "/app/groupicatv4.0b/GroupICATv4.0b_standalone/run_groupica.sh /usr/local/MATLAB/MATLAB_Runtime/v91/"
+matlab_cmd = "/app/groupicatv4.0c/GroupICATv4.0c_standalone/run_groupica.sh /usr/local/MATLAB/MATLAB_Runtime/v91/"
 # DEFAULT_OUT_DIR = os.path.join(str(settings.ROOT_DIR), 'media', 'figures')
 DEFAULT_OUT_DIR = "/out"
 DEFAULT_DISPLAY_RESULTS = 1
@@ -119,10 +119,11 @@ DEFAULT_INTERACTIONS = []
 DEFAULT_FEATURE_PARAMS = {}
 DEFAULT_P_THRESHOLD = 1.0
 DEFAULT_FREQ_LIMITS= [0.1, 0.15]
-DEFAULT_STRUCTFILE = "/app/groupicatv4.0c/icatb/src/icatb_templates/ch2bet.nii"
+DEFAULT_STRUCTFILE = "/app/groupicatv4.0c/icatb/icatb_templates/ch2bet.nii"
 DEFAULT_T_THRESHOLD = 1.0
 DEFAULT_IMAGE_VALUES = "positive"
 DEFAULT_THRESHDESC = "fdr"
+DEFAULT_DISPLAY_CONNECTOGRAM = 1
 
 
 def gift_gica(
@@ -354,7 +355,8 @@ def gift_mancova(
     structFile=DEFAULT_STRUCTFILE,
     t_threshold=DEFAULT_T_THRESHOLD,
     image_values=DEFAULT_IMAGE_VALUES,
-    threshdesc=DEFAULT_THRESHDESC
+    threshdesc=DEFAULT_THRESHDESC,
+    display_connectogram=DEFAULT_DISPLAY_CONNECTOGRAM,
 ):
     gift.MancovanCommand.set_mlab_paths(matlab_cmd=matlab_cmd, use_mcr=True)
 
@@ -382,6 +384,7 @@ def gift_mancova(
         "t_threshold": t_threshold,
         "image_values": image_values,
         "threshdesc": threshdesc,
+        "display_connectogram": display_connectogram
     }
     if univariate_tests is not None:
         gc.inputs.univariate_tests = univariate_tests
